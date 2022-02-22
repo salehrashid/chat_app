@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 //stful, buat layout yang dinamis
 class ChatScreen extends StatefulWidget {
+  static const String id = 'CHAT_SCREEN';
+
   const ChatScreen({Key? key}) : super(key: key);
 
   @override

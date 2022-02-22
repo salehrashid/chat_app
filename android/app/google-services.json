@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "348258637839",
+    "project_id": "chat-app-7194b",
+    "storage_bucket": "chat-app-7194b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348258637839:android:f052597f0fadccf5b2ab7a",
+        "android_client_info": {
+          "package_name": "com.saleh.chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348258637839-ms0u0s082f8qp16kgon0tjitkl1t9g58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1JJ3ghfiw9Gioltl49iYwwMkOF8REJl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348258637839-ms0u0s082f8qp16kgon0tjitkl1t9g58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

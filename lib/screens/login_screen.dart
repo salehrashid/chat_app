@@ -1,3 +1,5 @@
+import 'package:chat_app/screens/chat_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,12 +13,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
+
+  late String email;
+  late String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),//symmetric adalah mencakup dua padding kanan kiri atau atas bawah
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        //symmetric adalah mencakup dua padding kanan kiri atau atas bawah
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -29,49 +37,56 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 48.0,
             ),
             TextField(
-              onChanged: (value){
-                //input user
+              keyboardType: TextInputType.emailAddress,
+              style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
+              onChanged: (value) {
+                email = value;
               },
               decoration: const InputDecoration(
                 hintText: 'Enter your email',
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(32.0)),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0)
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                    borderSide:
+                        BorderSide(color: Colors.lightBlueAccent, width: 1.0)),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0)
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                    borderSide:
+                        BorderSide(color: Colors.lightBlueAccent, width: 2.0)),
               ),
             ),
             const SizedBox(
               height: 8.0,
             ),
             TextField(
-              onChanged: (value){
-              //input user
-            },
-            decoration: const InputDecoration(
-              hintText: 'Enter your password',
-              hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
-              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0)
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0)
-              )
-            ),
+              obscureText: true,
+              style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
+              onChanged: (value) {
+                password = value;
+              },
+              decoration: const InputDecoration(
+                  hintText: 'Enter your password',
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                      borderSide: BorderSide(
+                          color: Colors.lightBlueAccent, width: 1.0)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                      borderSide: BorderSide(
+                          color: Colors.lightBlueAccent, width: 2.0))),
             ),
             const SizedBox(
               height: 24.0,
@@ -82,8 +97,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.lightBlueAccent,
                 borderRadius: BorderRadius.circular(30.0),
                 child: MaterialButton(
-                  onPressed: (){
-                    //to login
+                  onPressed: () async {
+                    try {
+                      await _auth.signInWithEmailAndPassword(
+                          email: email, password: password);
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    } catch (e) {
+                      print(e);
+                    }
                   },
                   minWidth: 200,
                   height: 42.0,

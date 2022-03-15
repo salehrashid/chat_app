@@ -12,7 +12,6 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-
   final _auth = FirebaseAuth.instance;
 
   late String email;
@@ -69,7 +68,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 password = value;
               },
               decoration: const InputDecoration(
-                hintText: 'Input your Name',
+                hintText: 'Input your Password',
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -95,9 +94,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: MaterialButton(
                   onPressed: () async {
                     try {
-                      await _auth.signInWithEmailAndPassword(email: email, password: password);
+                      await _auth.createUserWithEmailAndPassword(
+                          email: email, password: password);
                       Navigator.pushNamed(context, ChatScreen.id);
-                    }catch(e){
+                    } catch (e) {
                       print(e);
                     }
                   },

@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
-
+late User loggedInUser;
 void getCurrentUser() {
   try {
     final user = _auth.currentUser;
@@ -16,8 +16,6 @@ void getCurrentUser() {
     }
   } catch (e) {}
 }
-
-late User loggedInUser;
 
 //stful, buat layout yang dinamis
 class ChatScreen extends StatefulWidget {
@@ -31,13 +29,13 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late String message;
-  
+
   final _textController = TextEditingController();
   final _auth = FirebaseAuth.instance;
 
   late DateTime now;
   late String formattedDate;
-  
+
   void getCurrentUser() {
     try {
       final user = _auth.currentUser;
@@ -59,7 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.forum),
-        title: Text('Chat'),
+        title: const Text('Chat'),
         backgroundColor: Colors.lightBlueAccent,
         actions: [
           IconButton(
@@ -67,8 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 _auth.signOut();
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.close)
-          )
+              icon: const Icon(Icons.close))
         ],
       ),
       body: SafeArea(
@@ -94,17 +91,18 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                        setState(() {
-                          now = DateTime.now();
-                          formattedDate = DateFormat('kk:mm:ss').format(now);
-                        });
-                        _textController.clear();
-                        _firestore
-                            .collection("messages")
-                            .add({"text": message, "sender": loggedInUser.email!, 'time': formattedDate}
-                      );
+                      setState(() {
+                        now = DateTime.now();
+                        formattedDate = DateFormat('kk:mm:ss').format(now);
+                      });
+                      _textController.clear();
+                      _firestore.collection("messages").add({
+                        "text": message,
+                        "sender": loggedInUser.email!,
+                        'time': formattedDate
+                      });
                     },
-                    child: Text('Send', style: kSendButtonTextStyle),
+                    child: const Text('Send', style: kSendButtonTextStyle),
                   )
                 ],
               ),
@@ -122,7 +120,8 @@ class MessageStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("messages")
+        stream: _firestore
+            .collection("messages")
             .orderBy('time', descending: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -186,8 +185,7 @@ class MessageBubble extends StatelessWidget {
                   topLeft: isMe ? Radius.circular(30) : Radius.circular(0),
                   topRight: isMe ? Radius.circular(0) : Radius.circular(30),
                   bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30)
-              ),
+                  bottomLeft: Radius.circular(30)),
               elevation: 5,
               color: isMe ? Colors.lightBlue : Colors.white,
               child: Padding(
@@ -199,8 +197,7 @@ class MessageBubble extends StatelessWidget {
                       color: isMe ? Colors.white : Colors.black54,
                       fontSize: 15),
                 ),
-              )
-          )
+              ))
         ],
       ),
     );
